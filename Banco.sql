@@ -1,3 +1,4 @@
+
 -- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
 -- Você precisa executar os comandos no banco de dados para criar as tabelas,
 -- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
@@ -79,14 +80,14 @@ CREATE TABLE totem (
 CREATE TABLE disco (
     idDisco INT AUTO_INCREMENT,
     nomeDisco VARCHAR(45),
-    total DECIMAL(10, 2),
+    total VARCHAR(45),
     tipo VARCHAR(45),
     dataInstalacao DATETIME,
-    fkTotem INT,
-    fkTerminal INT,
+    fk_totem INT,
+    fk_terminal INT,
     PRIMARY KEY (idDisco),
-    FOREIGN KEY (fkTotem) REFERENCES totem(idTotem),
-    FOREIGN KEY (fkTerminal) REFERENCES terminal(idTerminal)
+    FOREIGN KEY (fk_totem) REFERENCES totem(idTotem),
+    FOREIGN KEY (fk_terminal) REFERENCES terminal(idTerminal)
 );
 
 CREATE TABLE historico (
@@ -112,8 +113,8 @@ CREATE TABLE metrica (
     velocidadeMbpsRedeRangeLento DECIMAL(5, 2),
     metricaUsoDiscoRangeAlerta DECIMAL(5, 2),
     metricaUsoDiscoRangeLento DECIMAL(5, 2),
-    fkEmpresa INT,
-    FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa)
+    fk_empresa INT,
+    FOREIGN KEY (fk_empresa) REFERENCES empresa(idEmpresa)
 );
 
 
@@ -133,7 +134,7 @@ CREATE TABLE historicoStatus (
 CREATE TABLE historicoDisco (
     idHistoricoDisco INT PRIMARY KEY AUTO_INCREMENT,
     diaHorario DATETIME,
-    porcentDisponivel DECIMAL(5, 2),
+    porcentDisponivel DOUBLE,
     tempoUso TIME,
     fk_disco INT,
     FOREIGN KEY (fk_disco) REFERENCES disco(idDisco),
@@ -187,6 +188,7 @@ SELECT * FROM aeroporto;
 SELECT * FROM empresa;
 SELECT * FROM terminal;
 SELECT * FROM historico;
+SELECT * FROM historicoDisco;
 
 
 SELECT t.idTerminal AS idTerminal FROM usuario u
