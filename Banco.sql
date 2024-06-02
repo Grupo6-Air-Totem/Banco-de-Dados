@@ -57,6 +57,7 @@ CREATE TABLE usuario (
 
 CREATE TABLE totem (
 	idTotem INT PRIMARY KEY AUTO_INCREMENT,
+    nomeTotem VARCHAR(45),
     fk_empresa INT,
 	FOREIGN KEY (fk_empresa) REFERENCES empresa(idEmpresa),
     fk_aeroporto INT,
@@ -92,7 +93,6 @@ CREATE TABLE disco (
 
 CREATE TABLE historico (
     idHistorico INT PRIMARY KEY AUTO_INCREMENT,
-    idTotem INT,
     diaHorario DATETIME,
     usoMemoria VARCHAR(255),
     usoProcessador DOUBLE,
@@ -121,7 +121,6 @@ CREATE TABLE metrica (
 CREATE TABLE historicoStatus (
     idhistoricoStatus INT PRIMARY KEY AUTO_INCREMENT,
     diaHorario DATETIME,
-    status VARCHAR(45),
     colocadoManutencao DATETIME,
     retiradoManutencao DATETIME,
     fk_totem INT,
@@ -162,22 +161,72 @@ INSERT INTO aeroporto (nome, cep) VALUES
 
 
 INSERT INTO usuario (nome, email, senha, cpf, nivelAcesso, fk_empresa, fk_aeroporto) VALUES
-('Usuário 1', 'usuario1@email.com', 'senha123', '123.456.789-00', 'Administrador', 1, 1),
-('Usuário 2', 'usuario3@email.com', 'senha456', '987.654.321-00', 'Suporte', 2, 1);
-
-
-INSERT INTO usuario (nome, email, senha, cpf, nivelAcesso, fk_empresa, fk_aeroporto) VALUES
-('Lucas', 'usuario5@email.com', 'senha456', '123.456.789-00', 'Gerente', 1, 1);
-
-
-INSERT INTO usuario (nome, email, senha, cpf, nivelAcesso, fk_empresa, fk_aeroporto) VALUES
-('Usuário 1', 'usuario1@email.com', 'senha456', '123.456.789-00', 'Administrador', 2, 1);
-
+('Usuário 1', 'usuario1@email.com', 'senha123', '123.456.789-00', 'Administrador', 2, 1),
+('Usuário 2', 'usuario2@email.com', 'senha123', '987.654.321-00', 'Gerente', 2, 1),
+('Usuário 3', 'usuario3@email.com', 'senha123', '987.654.321-00', 'Suporte', 2, 1);
 
 INSERT INTO terminal (id_empresa, id_aeroporto) VALUES
 (1, 1),
+(1, 2),
 (2, 1),
 (2, 2);
+
+INSERT INTO totem (nomeTotem, fk_empresa, fk_aeroporto, fk_Terminal, inicializado, tempo_atv, modeloProcessador, fabricanteProcessador, frequenciaProcessador, so, memoriaTotal, hostRede, servidorDns, nomeDominioRede, velocidadeRede)
+VALUES 
+('Totem 1 Empresa 1', 1, 1, 1, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.1', '8.8.8.8', 'empresa1.local', 100.0),
+('Totem 2 Empresa 1', 1, 1, 1, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.1', '8.8.8.8', 'empresa1.local', 100.0),
+('Totem 3 Empresa 1', 1, 1, 1, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.2', '8.8.8.8', 'empresa2.local', 120.0),
+('Totem 4 Empresa 1', 1, 1, 1, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.2', '8.8.8.8', 'empresa3.local', 110.0),
+('Totem 5 Empresa 1', 1, 1, 2, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.2', '8.8.8.8', 'empresa3.local', 110.0),
+('Totem 6 Empresa 1', 1, 1, 2, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.2', '8.8.8.8', 'empresa3.local', 110.0),
+('Totem 7 Empresa 1', 1, 1, 2, '2023-01-01', '24h', 'Intel i5', 'Intel', '2.5 GHz', 'Windows 10', 8.0, '192.168.1.2', '8.8.8.8', 'empresa3.local', 110.0),
+('Totem 1 Empresa 2', 2, 2, 2, '2023-01-01', '24h', 'AMD Ryzen 5', 'AMD', '3.0 GHz', 'Linux', 16.0, '192.168.2.1', '8.8.4.4', 'empresa2.local', 200.0),
+('Totem 2 Empresa 2', 2, 2, 2, '2023-01-01', '24h', 'AMD Ryzen 5', 'AMD', '3.0 GHz', 'Linux', 16.0, '192.168.2.2', '8.8.4.4', 'empresa2.local', 200.0);
+
+INSERT INTO disco (nomeDisco, total, tipo, dataInstalacao, fk_totem, fk_terminal)
+VALUES 
+('Disco 1 Totem 1 Empresa 1', '500GB', 'SSD', '2023-01-01 00:00:00', 1, 1),
+('Disco 2 Totem 1 Empresa 1', '500GB', 'SSD', '2023-01-01 00:00:00', 1, 1),
+('Disco 1 Totem 2 Empresa 1', '1TB', 'HDD', '2023-01-01 00:00:00', 2, 2),
+('Disco 2 Totem 2 Empresa 1', '1TB', 'HDD', '2023-01-01 00:00:00', 2, 2),
+('Disco 1 Totem 1 Empresa 2', '1TB', 'SSD', '2023-01-01 00:00:00', 3, 1),
+('Disco 2 Totem 1 Empresa 2', '1TB', 'SSD', '2023-01-01 00:00:00', 3, 1);
+
+select hs.fk_totem, t.nomeTotem, hs.fk_Terminal , h.usoProcessador,h.usoMemoria, h.velocidadeRede, hs.statusTotem from totem as t join terminal as ter on t.fk_terminal = ter.idTerminal join historicoStatus as hs on hs.fk_Totem = t.idTotem join historico as h on h.fk_Totem = t.idTotem join historicoDisco as hd on hd.fk_Totem = t.idTotem where hs.statusTotem = 'Ativo' and hs.fk_Terminal = 2  and h.fk_Terminal = 1;
+
+INSERT INTO historico (diaHorario, usoMemoria, usoProcessador, velocidadeRede, fk_totem, fk_terminal)
+VALUES 
+('2023-05-01 10:00:00', '4GB', 50.0, 90.0, 1, 1),
+('2023-05-01 10:00:00', '4GB', 60.0, 80.0, 2, 1),
+('2023-05-01 10:00:00', '8GB', 40.0, 100.0, 3, 1),
+
+('2023-05-01 10:00:00', '8GB', 40.0, 100.0, 1, 2),
+('2023-05-02 10:00:00', '8GB', 65.0, 75.0, 2, 2),
+('2023-05-02 10:00:00', '4GB', 45.0, 95.0, 3, 2);
+
+INSERT INTO historicoStatus (diaHorario,  colocadoManutencao, retiradoManutencao, fk_totem, fk_terminal, statusTotem)
+VALUES 
+('2023-05-01 10:00:00', NULL, NULL, 1, 1, 'Ativo'),
+('2023-05-01 10:00:00','2023-05-01 12:00:00' , '2023-05-02 12:00:00', 2, 1, 'Inativo'),
+('2023-05-01 10:00:00', NULL, NULL, 3, 1, 'Ativo'),
+('2023-05-01 10:00:00', '2023-05-02 12:00:00', '2023-05-02 12:00:00', 4, 1, 'Manutenção'),
+('2023-05-01 12:00:00', null,NULL, 1, 2, 'Ativo'),
+('2023-05-01 12:00:00', '2023-05-02 12:00:00','2023-05-02 12:00:00', 2, 2, 'Inativo'),
+('2023-05-01 12:00:00','2023-05-01 12:00:00', '2023-05-02 12:00:00', 3, 2, 'Inativo');
+
+INSERT INTO historicoDisco (diaHorario, porcentDisponivel, tempoUso, fk_disco, fk_totem, fk_terminal)
+VALUES 
+('2023-05-01 10:00:00', 40.0, '02:00:00', 1, 2, 1),
+('2023-05-01 10:00:00', 80.0, '02:00:00', 1, 1, 1),
+('2023-05-01 10:00:00', 80.0, '02:00:00', 1, 3, 1),
+('2023-05-01 10:00:00', 60.0, '02:00:00', 3, 2, 2),
+('2023-05-01 12:00:00', 55.0, '04:00:00', 4, 2, 2);
+
+INSERT INTO metrica (metricaProcessadorRangeAlerta, metricaProcessadorRangeLento, metricaMemoriaRangeAlerta, metricaMemoriaRangeLento, velocidadeMbpsRedeRangeAlerta, velocidadeMbpsRedeRangeLento, metricaUsoDiscoRangeAlerta, metricaUsoDiscoRangeLento, fk_empresa)
+VALUES 
+(80.00, 60.00, 70.00, 50.00, 50.00, 30.00, 80.00, 60.00, 1),
+(80.00, 60.00, 70.00, 50.00, 50.00, 30.00, 80.00, 60.00, 2);
+
 
 -- SELECTS ---
 
@@ -189,12 +238,128 @@ SELECT * FROM empresa;
 SELECT * FROM terminal;
 SELECT * FROM historico;
 SELECT * FROM historicoDisco;
+SELECT * FROM HistoricoStatus;
 
+select * from totem join empresa on totem.fk_empresa = empresa.idEmpresa where totem.fk_empresa = 1;
 
-SELECT t.idTerminal AS idTerminal FROM usuario u
-                JOIN empresa e ON u.fk_empresa = e.idEmpresa
-                JOIN aeroporto a ON u.fk_aeroporto = a.idAero
-                JOIN terminal t ON e.idEmpresa = t.id_empresa AND a.idAero = t.id_aeroporto
-                WHERE u.email = 'usuario1@email.com' AND u.senha = 'senha456';
-                
-SELECT idTotem FROM totem WHERE idTotem = 1;
+SELECT
+	 hs.idhistoricoStatus, 
+	 DATE_FORMAT(hs.colocadoManutencao, '%d-%m-%Y') AS DiaHr,
+	 hs.* 
+ FROM
+	HistoricoStatus 
+ as 
+	hs
+WHERE 
+	fk_Terminal = 2
+    AND (statusTotem = 'Manutenção'
+    OR statusTotem = 'Inativo');
+
+SELECT
+	 hs.idhistoricoStatus, 
+	 DATE_FORMAT(hs.colocadoManutencao, '%d-%m-%Y') AS DiaHr,
+	 hs.* 
+ FROM
+	HistoricoStatus 
+ as 
+	hs
+WHERE 
+	fk_Terminal = 2 
+    AND (statusTotem = 'Ativo');
+
+ select 
+	ter.idTerminal,
+    COUNT(t.idTotem) as TotalTotens,
+	COUNT(CASE WHEN h.statusTotem = 'Inativo' then 1 end) as TotensInativos,
+    COUNT(CASE WHEN h.statusTotem = 'Manutenção' THEN 1 END) AS TotensEmManutencao,
+	COUNT(CASE WHEN h.statusTotem = 'Ativo' THEN 1 END) AS TotensAtivos
+from
+	totem as t
+join 
+	HistoricoStatus as h
+on
+	h.fk_Totem = t.idTotem
+join 
+	Terminal as ter
+on 
+	h.fk_Terminal = ter.idTerminal
+join
+	empresa
+on
+	t.fk_empresa = empresa.idEmpresa
+where 
+	t.fk_empresa = 1 
+group by
+	ter.idTerminal; 
+    
+    
+SELECT 
+    COUNT(*) AS TotalTotens
+FROM 
+    totem;
+    
+SELECT 
+    hs.fk_Terminal AS idTerminal,
+    t.nomeTotem AS nomeTotem,
+    t.idTotem AS idTotem,
+    h.usoProcessador AS PercentualCPU,
+    hd.porcentDisponivel AS PercentualDisco,
+    h.UsoMemoria AS PercentualMemoria,
+    h.velocidadeRede AS VelocidadeRede,
+    hs.statusTotem AS StatusTotem
+FROM 
+    totem AS t
+JOIN 
+    historico AS h ON h.fk_totem = t.idTotem
+JOIN 
+    historicoDisco AS hd ON hd.fk_totem = t.idTotem
+JOIN 
+    terminal AS ter ON t.fk_Terminal = ter.idTerminal
+JOIN 
+    historicoStatus AS hs ON hs.fk_totem = t.idTotem 
+WHERE 
+hs.statusTotem = 'Ativo' and hs.fk_Terminal = 1  and h.fk_Terminal = 1 and hd.fk_Terminal = 1;
+
+	SELECT 
+    h.fk_Terminal,
+    SUM(CASE 
+            WHEN h.UsoProcessador >= a.metricaProcessadorRangeAlerta 
+            THEN 1 ELSE 0 END) AS totens_em_alerta,
+    SUM(CASE 
+            WHEN (h.UsoProcessador BETWEEN a.metricaProcessadorRangeLento AND a.metricaProcessadorRangeAlerta) 
+            THEN 1 ELSE 0 END) AS totens_lentos,
+    SUM(CASE 
+            WHEN h.UsoProcessador < a.metricaProcessadorRangeLento 
+            THEN 1 ELSE 0 END) AS totens_ok
+	FROM 
+    Historico h
+	JOIN 
+    totem t ON h.fk_Totem = t.idTotem
+	JOIN 
+    terminal tr ON h.fk_Terminal = tr.idTerminal
+	JOIN 
+    metrica a ON tr.id_empresa = a.fk_empresa
+	WHERE
+	tr.idTerminal =1;
+    
+    	SELECT 
+    h.fk_Terminal,
+    SUM(CASE 
+            WHEN h.UsoProcessador >= a.metricaProcessadorRangeAlerta 
+            THEN 1 ELSE 0 END) AS totens_em_alerta,
+    SUM(CASE 
+            WHEN (h.UsoProcessador BETWEEN a.metricaProcessadorRangeLento AND a.metricaProcessadorRangeAlerta) 
+            THEN 1 ELSE 0 END) AS totens_lentos,
+    SUM(CASE 
+            WHEN h.UsoProcessador < a.metricaProcessadorRangeLento 
+            THEN 1 ELSE 0 END) AS totens_ok
+	FROM 
+    Historico h
+	JOIN 
+    totem t ON h.fk_Totem = t.idTotem
+	JOIN 
+    terminal tr ON h.fk_Terminal = tr.idTerminal
+	JOIN 
+    metrica a ON tr.id_empresa = a.fk_empresa
+	WHERE
+	tr.idTerminal = 1;
