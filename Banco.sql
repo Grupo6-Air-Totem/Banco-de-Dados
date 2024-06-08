@@ -63,7 +63,7 @@ CREATE TABLE totem (
 	FOREIGN KEY (fk_aeroporto) REFERENCES aeroporto(idAero),
     fk_terminal INT,
 	FOREIGN KEY (fk_terminal) REFERENCES terminal(idTerminal),
-    inicializado DATE,
+    dataInstalacao DATE,
     tempo_atv VARCHAR(255),
     modeloProcessador VARCHAR(255),
     fabricanteProcessador VARCHAR(255),
@@ -94,9 +94,9 @@ CREATE TABLE historico (
     idHistorico INT PRIMARY KEY AUTO_INCREMENT,
     idTotem INT,
     diaHorario DATETIME,
-    usoMemoria VARCHAR(255),
-    usoProcessador DOUBLE,
-    velocidadeRede DOUBLE,
+    usoMemoria INT,
+    usoProcessador INT,
+    velocidadeRede INT,
     fk_totem INT,
     FOREIGN KEY (fk_totem) REFERENCES totem(idTotem),
     fk_terminal INT,
@@ -134,7 +134,7 @@ CREATE TABLE historicoStatus (
 CREATE TABLE historicoDisco (
     idHistoricoDisco INT PRIMARY KEY AUTO_INCREMENT,
     diaHorario DATETIME,
-    porcentDisponivel DOUBLE,
+    porcentDisponivel INT,
     tempoUso TIME,
     fk_disco INT,
     FOREIGN KEY (fk_disco) REFERENCES disco(idDisco),
@@ -173,6 +173,21 @@ INSERT INTO usuario (nome, email, senha, cpf, nivelAcesso, fk_empresa, fk_aeropo
 INSERT INTO usuario (nome, email, senha, cpf, nivelAcesso, fk_empresa, fk_aeroporto) VALUES
 ('Usuário 1', 'usuario1@email.com', 'senha456', '123.456.789-00', 'Administrador', 2, 1);
 
+INSERT INTO metrica (
+    metricaProcessadorRangeAlerta, 
+    metricaProcessadorRangeLento, 
+    metricaMemoriaRangeAlerta, 
+    metricaMemoriaRangeLento, 
+    velocidadeMbpsRedeRangeAlerta, 
+    velocidadeMbpsRedeRangeLento, 
+    metricaUsoDiscoRangeAlerta, 
+    metricaUsoDiscoRangeLento, 
+    fk_empresa
+) VALUES
+(4, 1, 1, 1, 1, 1, 1, 1, 1);
+
+
+
 
 INSERT INTO terminal (id_empresa, id_aeroporto) VALUES
 (1, 1),
@@ -189,12 +204,9 @@ SELECT * FROM empresa;
 SELECT * FROM terminal;
 SELECT * FROM historico;
 SELECT * FROM historicoDisco;
+SELECT * FROM metrica;
 
 
-SELECT t.idTerminal AS idTerminal FROM usuario u
-                JOIN empresa e ON u.fk_empresa = e.idEmpresa
-                JOIN aeroporto a ON u.fk_aeroporto = a.idAero
-                JOIN terminal t ON e.idEmpresa = t.id_empresa AND a.idAero = t.id_aeroporto
-                WHERE u.email = 'usuario1@email.com' AND u.senha = 'senha456';
-                
-SELECT idTotem FROM totem WHERE idTotem = 1;
+SELECT fk_empresa FROM usuario WHERE email = 'usuario1@email.com' AND senha = 'senha123';
+
+
