@@ -1,4 +1,3 @@
-
 -- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
 -- Você precisa executar os comandos no banco de dados para criar as tabelas,
 -- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
@@ -92,7 +91,6 @@ CREATE TABLE disco (
 
 CREATE TABLE historico (
     idHistorico INT PRIMARY KEY AUTO_INCREMENT,
-    idTotem INT,
     diaHorario DATETIME,
     usoMemoria INT,
     usoProcessador INT,
@@ -133,9 +131,15 @@ CREATE TABLE historicoStatus (
 
 CREATE TABLE historicoDisco (
     idHistoricoDisco INT PRIMARY KEY AUTO_INCREMENT,
+<<<<<<< HEAD
     diaHorario DATETIME,
     porcentDisponivel INT,
     tempoUso TIME,
+=======
+    diaHorario VARCHAR(45),
+    porcentDisponivel LONG,
+    tempoUso VARCHAR(45),
+>>>>>>> 3692a5ee7cf87c2565c0af4aa55c986263f409ad
     fk_disco INT,
     FOREIGN KEY (fk_disco) REFERENCES disco(idDisco),
     fk_totem INT,
@@ -210,3 +214,15 @@ SELECT * FROM metrica;
 SELECT fk_empresa FROM usuario WHERE email = 'usuario1@email.com' AND senha = 'senha123';
 
 
+<<<<<<< HEAD
+=======
+SELECT t.idTerminal AS idTerminal FROM usuario u
+                JOIN empresa e ON u.fk_empresa = e.idEmpresa
+                JOIN aeroporto a ON u.fk_aeroporto = a.idAero
+                JOIN terminal t ON e.idEmpresa = t.id_empresa AND a.idAero = t.id_aeroporto
+                WHERE u.email = 'usuario1@email.com' AND u.senha = 'senha456';
+                
+SELECT idTotem FROM totem WHERE idTotem = 1;
+
+
+>>>>>>> 3692a5ee7cf87c2565c0af4aa55c986263f409ad
