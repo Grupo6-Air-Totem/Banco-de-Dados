@@ -118,10 +118,9 @@ CREATE TABLE metrica (
 
 CREATE TABLE historicoStatus (
     idhistoricoStatus INT PRIMARY KEY AUTO_INCREMENT,
-    diaHorario DATETIME,
-    status VARCHAR(45),
-    colocadoManutencao DATETIME,
-    retiradoManutencao DATETIME,
+    diaHorario VARCHAR(45),
+    colocadoManutencao VARCHAR(45),
+    retiradoManutencao VARCHAR(45),
     fk_totem INT,
     FOREIGN KEY (fk_totem) REFERENCES totem(idTotem),
     fk_terminal INT,
@@ -131,15 +130,9 @@ CREATE TABLE historicoStatus (
 
 CREATE TABLE historicoDisco (
     idHistoricoDisco INT PRIMARY KEY AUTO_INCREMENT,
-<<<<<<< HEAD
-    diaHorario DATETIME,
     porcentDisponivel INT,
-    tempoUso TIME,
-=======
     diaHorario VARCHAR(45),
-    porcentDisponivel LONG,
     tempoUso VARCHAR(45),
->>>>>>> 3692a5ee7cf87c2565c0af4aa55c986263f409ad
     fk_disco INT,
     FOREIGN KEY (fk_disco) REFERENCES disco(idDisco),
     fk_totem INT,
@@ -208,21 +201,9 @@ SELECT * FROM empresa;
 SELECT * FROM terminal;
 SELECT * FROM historico;
 SELECT * FROM historicoDisco;
+SELECT * FROM historicoStatus;
 SELECT * FROM metrica;
 
 
 SELECT fk_empresa FROM usuario WHERE email = 'usuario1@email.com' AND senha = 'senha123';
 
-
-<<<<<<< HEAD
-=======
-SELECT t.idTerminal AS idTerminal FROM usuario u
-                JOIN empresa e ON u.fk_empresa = e.idEmpresa
-                JOIN aeroporto a ON u.fk_aeroporto = a.idAero
-                JOIN terminal t ON e.idEmpresa = t.id_empresa AND a.idAero = t.id_aeroporto
-                WHERE u.email = 'usuario1@email.com' AND u.senha = 'senha456';
-                
-SELECT idTotem FROM totem WHERE idTotem = 1;
-
-
->>>>>>> 3692a5ee7cf87c2565c0af4aa55c986263f409ad
